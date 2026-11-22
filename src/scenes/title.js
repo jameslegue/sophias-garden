@@ -3,6 +3,7 @@ import { drawButton, tapped } from '../ui/button.js';
 import { sfx } from '../engine/audio.js';
 import { AvatarBuilderScene } from './avatar-builder.js';
 import { playSong } from '../engine/music.js';
+import { VERSION } from '../version.js';
 
 const SOUND = { x: 98, y: 3, w: 43, h: 11 };
 
@@ -57,5 +58,6 @@ export class TitleScene {
 
     this.buttons.forEach((b, i) => drawButton(r, b, i === this.sel));
     r.textC('A GAME BY SOPHIA', 72, 240, 'P');
+    r.text(VERSION, 3, 249, 'T');
   }
 }
