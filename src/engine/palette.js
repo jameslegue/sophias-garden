@@ -1,4 +1,4 @@
-// The 16-color palette for the whole game. Sprites use these letters.
+// The game palette (16 colors + lavender) for the whole game. Sprites use these letters.
 export const PAL = {
   K: '#1a1c2c', // black
   P: '#5d275d', // plum
@@ -16,6 +16,7 @@ export const PAL = {
   D: '#8f563b', // brown
   Q: '#94b0c2', // light gray
   E: '#566c86', // gray
+  V: '#b8a1ec', // lavender (Sophia's request)
 };
 
 export const COLORS = Object.keys(PAL);

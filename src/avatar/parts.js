@@ -26,6 +26,8 @@ export const HAIR = {
   BUN: ['...hh...', '..hhhh..', '.hhhhhh.'],
   SPIKY: ['.h.hh.h.', '.hhhhhh.', '.h....h.'],
   CURLY: ['.hhhhhh.', 'hhhhhhhh', 'hhh..hhh', 'hh....hh', 'h......h'],
+  PONYTAIL: ['..hhhh..', '.hhhhhhh', '.h....hh', '.......h', '.......h', '.......h'],
+  PIGTAILS: ['..hhhh..', '.hhhhhh.', '.h....h.', 'h......h', 'hh....hh', 'h......h'],
 };
 
 export const HATS = {
@@ -35,6 +37,12 @@ export const HATS = {
   BOW: ['.aa.....', 'aaa.....', '.aa.....'],
   FLOWER: ['......a.', '.....aYa', '......a.'],
   TOPHAT: ['..aaaa..', '..aaaa..', '.aaaaaa.'],
+};
+
+// Outfits sit on top of the body (from the shoulders down). Overalls use the PANTS color.
+export const OUTFITS = {
+  CLASSIC: [],
+  OVERALLS: ['.p....p.', '..pppp..', '.pppppp.'],
 };
 
 export const SKINS = ['Y', 'O', 'D'];

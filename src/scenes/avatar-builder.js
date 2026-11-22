@@ -1,5 +1,5 @@
 import { COLORS } from '../engine/palette.js';
-import { HAIR, HATS, SKINS } from '../avatar/parts.js';
+import { HAIR, HATS, SKINS, OUTFITS } from '../avatar/parts.js';
 import { SPR } from '../sprites.js';
 import { drawButton, tapped } from '../ui/button.js';
 import { sfx } from '../engine/audio.js';
@@ -8,14 +8,15 @@ const ROWS = [
   { label: 'SKIN', key: 'skin', values: SKINS, color: true },
   { label: 'HAIR', key: 'hair', values: Object.keys(HAIR) },
   { label: 'HAIR COLOR', key: 'hairColor', values: COLORS, color: true },
+  { label: 'OUTFIT', key: 'outfit', values: Object.keys(OUTFITS) },
   { label: 'SHIRT', key: 'shirt', values: COLORS, color: true },
   { label: 'PANTS', key: 'pants', values: COLORS, color: true },
   { label: 'SHOES', key: 'shoes', values: COLORS, color: true },
   { label: 'HAT', key: 'hat', values: Object.keys(HATS) },
   { label: 'HAT COLOR', key: 'hatColor', values: COLORS, color: true },
 ];
-const ROW_Y = 78;
-const ROW_H = 15;
+const ROW_Y = 76;
+const ROW_H = 14;
 const PREV = { x: 74, w: 13 };
 const NEXT = { x: 127, w: 13 };
 
