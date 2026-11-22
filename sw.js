@@ -1,7 +1,7 @@
 // Lets the game run offline from the home screen.
 // Always asks GitHub for the newest files first (so a new version shows up right away),
 // and falls back to the saved copy only when there's no signal.
-const CACHE = 'sophias-garden-v6';
+const CACHE = 'sophias-garden-v7';
 const FILES = [
   './',
   './icons/icon-192.png',

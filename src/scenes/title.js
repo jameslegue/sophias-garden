@@ -1,4 +1,5 @@
-import { SPR } from '../sprites.js';
+import { SPR, FRUITS } from '../sprites.js';
+import { wrap } from '../engine/render.js';
 import { drawButton, tapped } from '../ui/button.js';
 import { sfx } from '../engine/audio.js';
 import { AvatarBuilderScene } from './avatar-builder.js';
@@ -12,10 +13,15 @@ export class TitleScene {
     this.game = game;
     this.t = 0;
     this.sel = 0;
-    const last = game.progress.lastLevel;
+    // CONTINUE goes to the first floor whose seed you don't have yet (then the battle).
+    const seeds = game.progress.seeds;
+    const nextIdx = FRUITS.findIndex((f) => !seeds.includes(f.id));
+    const next = nextIdx === -1 ? 'levels/level1/06-battle.json' : `levels/level1/0${nextIdx + 1}-${FRUITS[nextIdx].id}.json`;
+    this.nextName = nextIdx === -1 ? 'BATTLE' : FRUITS[nextIdx].name;
+    const last = seeds.length > 0;
     this.buttons = [
       { label: 'PLAY', go: () => game.startLevel('levels/level1/00-spawn.json') },
-      last && { label: 'CONTINUE', go: () => game.startLevel(last) },
+      last && { label: 'CONTINUE', go: () => game.startLevel(next) },
       { label: 'MY AVATAR', go: () => game.go(new AvatarBuilderScene(game)) },
     ].filter(Boolean);
     // Continue is the easy pick when there's a floor to go back to
@@ -57,7 +63,14 @@ export class TitleScene {
     r.spr(SPR.rosie, 76, 121, true, 3);
 
     this.buttons.forEach((b, i) => drawButton(r, b, i === this.sel));
-    r.textC('A GAME BY SOPHIA', 72, 240, 'P');
+    r.textC('A GAME BY SOPHIA', 72, 243, 'P');
     r.text(VERSION, 3, 249, 'T');
+    if (this.buttons.length > 2) r.textC(`NEXT: ${this.nextName}`, 72, 234, 'Y', 1, 'P');
+    // If something ever breaks on a phone, show it here so we can screenshot it.
+    if (this.game.error) {
+      const lines = wrap(this.game.error, 34).slice(0, 4);
+      r.box(2, 70, 140, 10 + lines.length * 7, 'K', 'R');
+      lines.forEach((l, i) => r.text(l, 5, 74 + i * 7, 'Y'));
+    }
   }
 }

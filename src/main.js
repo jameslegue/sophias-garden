@@ -51,21 +51,32 @@ const game = {
       this.go(new Scene(this, data));
     } catch (e) {
       console.error(e);
+      this.error = `ERROR LOADING ${path.split('/').pop()}: ${e.message}`;
       this.toTitle();
     }
   },
 };
 
 setMuted(game.settings.muted);
+addEventListener('error', (e) => { game.error = `ERROR: ${e.message} (${(e.filename || '').split('/').pop()}:${e.lineno})`; });
+addEventListener('unhandledrejection', (e) => { game.error = `ERROR: ${e.reason?.message || e.reason}`; });
 
 
 // ?level=levels/level1/01-rose.json jumps straight to a floor (handy for testing).
 const jump = new URLSearchParams(location.search).get('level');
 if (jump) game.startLevel(jump); else game.toTitle();
 
+// If a floor crashes mid-game, go back to the title and show what happened instead of freezing.
+function safely(fn) {
+  try { fn(); } catch (e) {
+    console.error(e);
+    game.error = `ERROR IN ${game.scene?.data?.id || 'GAME'}: ${e.message}`;
+    game.toTitle();
+  }
+}
 start(
-  () => { game.scene?.update(); game.input.endStep(); },
-  () => { game.r.clear('K'); game.scene?.draw(game.r); },
+  () => { safely(() => game.scene?.update()); game.input.endStep(); },
+  () => { game.r.clear('K'); safely(() => game.scene?.draw(game.r)); },
 );
 
 window.__game = game;
