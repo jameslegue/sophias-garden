@@ -12,7 +12,7 @@ import { Dialog } from '../ui/dialog.js';
 import { drawSeedBar, tappedMenu } from '../ui/seed-bar.js';
 
 export async function loadLevel(path) {
-  const res = await fetch(path);
+  const res = await fetch(path, { cache: 'no-cache' });
   if (!res.ok) throw new Error(`Could not load ${path}`);
   return res.json();
 }

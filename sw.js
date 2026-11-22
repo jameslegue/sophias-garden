@@ -1,6 +1,7 @@
 // Lets the game run offline from the home screen.
-// Network first (so updates show up right away), saved copy when offline.
-const CACHE = 'sophias-garden-v1';
+// Always asks GitHub for the newest files first (so a new version shows up right away),
+// and falls back to the saved copy only when there's no signal.
+const CACHE = 'sophias-garden-v2';
 const FILES = [
   './',
   './icons/icon-192.png',
@@ -54,9 +55,11 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
+  if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
+  // 'no-cache' = never trust the browser's own saved copy without checking with the server.
+  const req = e.request.mode === 'navigate' ? e.request.url : e.request;
   e.respondWith(
-    fetch(e.request)
+    fetch(req, { cache: 'no-cache' })
       .then((res) => {
         if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }
         return res;

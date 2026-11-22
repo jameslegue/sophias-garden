@@ -37,6 +37,19 @@
     <button data-k="right" aria-label="Right">▶</button>
     <button data-k="jump" class="jump">JUMP</button>
   </div>
+  <script>
+    // Offline helper + always-fresh updates. On a phone's first visit, reload once after it
+    // takes over so every game file comes through it (no stale mix of old and new files).
+    if ('serviceWorker' in navigator) {
+      const firstVisit = !navigator.serviceWorker.controller;
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!firstVisit) return;
+        try { if (sessionStorage.getItem('sg-reloaded')) return; sessionStorage.setItem('sg-reloaded', '1'); } catch { return; }
+        location.reload();
+      });
+    }
+  </script>
   <script type="module" src="src/main.js"></script>
 </body>
 </html>

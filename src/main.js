@@ -58,8 +58,6 @@ const game = {
 
 setMuted(game.settings.muted);
 
-// Works offline once installed to the home screen.
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
 // ?level=levels/level1/01-rose.json jumps straight to a floor (handy for testing).
 const jump = new URLSearchParams(location.search).get('level');
