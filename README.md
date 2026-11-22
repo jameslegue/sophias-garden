@@ -8,6 +8,7 @@ Climb the tower one obby floor at a time - Rose, Carrot, Apple, Melon, Strawberr
 - **◀ ▶** to move, **JUMP** to jump (keyboard: arrows / A D, Space or Up to jump)
 - Touch a flower to save your spot. Hit a thorn and you go back to your last flower.
 - Reach the seed at the top of each floor - Rosie grabs it for you.
+- At the top, Sophia is mad! Keep moving to dodge her fruit. When she's dizzy, run to her and Rosie gives her a seed.
 - **MY AVATAR** on the title screen to design your character (or hit RANDOM).
 
 ## Run it
@@ -21,7 +22,9 @@ Then go to http://localhost:8000. (Opening `index.html` directly won't work - br
 
 On a phone: host on GitHub Pages (repo Settings → Pages → deploy from branch), open the link, then "Add to Home Screen".
 
-Testing shortcut: `?level=levels/level1/01-rose.json` jumps straight to a floor.
+Testing shortcut: `?level=levels/level1/01-rose.json` jumps straight to a floor (`06-battle.json` for the boss).
+
+Offline: `sw.js` caches the game so it works from the home screen with no signal. It always tries the network first, so updates show up right away. If you add new files, add them to the list in `sw.js` too (anything missed still gets cached the first time it loads).
 
 ## How it's built
 - Plain JavaScript modules + an HTML canvas at 144x256, scaled up in whole pixels so it stays crisp
@@ -52,7 +55,7 @@ The later "make your own obby" builder will save floors in this same format.
 ## Roadmap
 1. ✅ Foundation + Rose floor - controls, avatar builder, spawn intro, Rosie, checkpoints, seed bar
 2. ✅ Floors 2-5 - Carrot, Apple, Melon, Strawberry, plus CONTINUE from your last floor
-3. Battle vs Sophia (she's mad, karate stance, cartwheels away after throwing fruit) + music, ending, offline install
+3. ✅ Battle vs Sophia - she's mad, throws fruit from a karate stance and cartwheels away; give her all 5 seeds to make the garden bloom. Plus music, sound on/off, ending, offline install
 4. Avatar pixel editor - draw your own hats and outfits
 5. Obby builder - make your own floors
 6. Sharing + Level 2

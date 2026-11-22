@@ -9,7 +9,7 @@
     "N": "N"
   },
   "flower": "Y",
-  "next": null,
+  "next": "levels/level1/06-battle.json",
   "outro": [
     {
       "who": "ROSIE",
@@ -21,7 +21,7 @@
     },
     {
       "who": "",
-      "text": "SOPHIA IS WAITING AT THE TOP OF THE TOWER... THE BATTLE IS COMING SOON!"
+      "text": "SOPHIA IS WAITING AT THE TOP OF THE TOWER... AND SHE IS MAD!"
     }
   ],
   "map": [

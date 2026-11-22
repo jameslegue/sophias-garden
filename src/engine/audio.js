@@ -1,5 +1,10 @@
 // Chiptune-style sound effects made from simple square waves.
 let ctx = null;
+let muted = false;
+
+export const getCtx = () => ctx;
+export const isMuted = () => muted;
+export function setMuted(v) { muted = v; }
 
 // Browsers only allow sound after the player touches/presses something.
 export function unlock() {
@@ -10,7 +15,7 @@ export function unlock() {
 }
 
 function tone(freq, dur, { type = 'square', vol = 0.05, to = null, delay = 0 } = {}) {
-  if (!ctx) return;
+  if (!ctx || muted) return;
   const t = ctx.currentTime + delay;
   const o = ctx.createOscillator();
   const g = ctx.createGain();
@@ -37,5 +42,8 @@ export const sfx = {
   blip: () => tone(880, 0.04, { vol: 0.03 }),
   select: () => tone(660, 0.05, { vol: 0.04 }),
   door: () => notes([392, 523, 659], 0.09, { type: 'triangle', vol: 0.08 }),
+  splat: () => tone(140, 0.12, { to: 60, type: 'square', vol: 0.04 }),
+  hiya: () => tone(500, 0.15, { to: 900, type: 'sawtooth', vol: 0.03 }),
+  bloom: () => notes([784, 988, 1175, 1568], 0.06, { type: 'triangle', vol: 0.07 }),
   bark: () => { tone(700, 0.06, { to: 350 }); tone(700, 0.06, { to: 350, delay: 0.14 }); },
 };

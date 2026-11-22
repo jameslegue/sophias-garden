@@ -7,6 +7,7 @@ import { Rosie } from '../entities/rosie.js';
 import { Camera } from '../engine/camera.js';
 import { T, overlaps, touchingHazard } from '../engine/physics.js';
 import { sfx } from '../engine/audio.js';
+import { stopMusic } from '../engine/music.js';
 import { Dialog } from '../ui/dialog.js';
 import { drawSeedBar, tappedMenu } from '../ui/seed-bar.js';
 
@@ -67,6 +68,7 @@ export class PlayScene {
     this.popups = [];
     this.banner = data.floor ? { a: `FLOOR ${data.floor}`, b: data.name, t: 150 } : null;
     this.fade = { a: 1, dir: -1 }; // fade in
+    stopMusic();
   }
 
   say(lines, then, opts) {
@@ -111,6 +113,7 @@ export class PlayScene {
         this.player.respawn(this.respawn.x, this.respawn.y);
         this.rosie.snap(this.player);
         this.state = 'play';
+        this.onRespawn?.();
       }
       return;
     }
@@ -200,6 +203,8 @@ export class PlayScene {
 
   drawExtras() {}
 
+  hudSeeds() { return this.game.progress.seeds; }
+
   draw(r) {
     const ctx = r.ctx;
     let cy = Math.round(this.cam.y);
@@ -221,6 +226,7 @@ export class PlayScene {
     for (const tree of this.trees) tree.draw(r);
     for (const a of this.apples) drawApple(r, a);
     for (const cp of this.checkpoints) r.spr(cp.active ? this.cpOn : SPR.cpOff, cp.x, cp.y);
+    this.drawFront?.(r);
     for (const s of this.seeds) {
       if (s.taken) continue;
       const bob = Math.round(Math.sin(this.t / 10) * 2);
@@ -232,7 +238,7 @@ export class PlayScene {
     for (const p of this.popups) r.textC(p.text, p.x, p.y, p.c, 1, 'K');
     ctx.restore();
 
-    drawSeedBar(r, this.game.progress.seeds);
+    drawSeedBar(r, this.hudSeeds(), this.hudLabel);
     if (this.banner) {
       r.box(30, 22, 84, 22, 'K', 'M');
       r.textC(this.banner.a, 72, 26, 'Q');

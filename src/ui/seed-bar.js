@@ -3,10 +3,10 @@ import { FRUITS, SPR } from '../sprites.js';
 export const HUD_H = 12;
 
 // Top bar: the five fruit seeds (gray until collected) and a MENU button.
-export function drawSeedBar(r, seeds) {
+export function drawSeedBar(r, seeds, label = 'SEEDS') {
   r.rect(0, 0, r.W, HUD_H, 'K');
   r.rect(0, HUD_H, r.W, 1, 'P');
-  r.text('SEEDS', 3, 4, 'Q');
+  r.text(label, 3, 4, 'Q');
   FRUITS.forEach((f, i) => {
     r.spr(seeds.includes(f.id) ? SPR.fruit[f.id] : SPR.fruitGray[f.id], 25 + i * 10, 3);
   });

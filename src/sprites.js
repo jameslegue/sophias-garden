@@ -245,3 +245,51 @@ for (const f of FRUITS) {
 // Each floor can recolor the background bricks and the checkpoint flower.
 export const themedBg = (map) => makeSprite(TILES.bgBrick, map);
 export const flowerSprite = (color) => makeSprite(CHECKPOINT_ON, { M: color });
+
+// ---------- Sophia, the boss (12x16, facing right) ----------
+// White karate gi, black belt, brown ponytail with a pink bow - and she is MAD.
+const SOPHIA_STANCE = [
+  '....DDDD....',
+  '..MDDDDDD...',
+  '.MMDYYYYD...',
+  '..DKKYYKKY..',
+  '..DYKYYKYY..',
+  '..DYYYYYYY..',
+  '...YYRRRY...',
+  '....YYYY....',
+  '..WWWWWWWYY.',
+  '.YWWQWWW....',
+  '..WKKKKKW...',
+  '..WWWWWWW...',
+  '.WWW...WWW..',
+  'WWW.....WWW.',
+  'WW.......WW.',
+  'YY.......YY.',
+];
+const sophiaFrame = (rows) => makeSprite(SOPHIA_STANCE.map((r, i) => rows[i] ?? r));
+export const SOPHIA = {
+  stance: sophiaFrame({}),
+  throw: sophiaFrame({
+    3: '..DKKYYKKY.Y',
+    4: '..DYKYYKYY.W',
+    5: '..DYYYYYYYW.',
+    6: '...YYRRRYW..',
+    7: '....YYYYW...',
+    8: '..WWWWWWW...',
+  }),
+  dizzy: sophiaFrame({
+    3: '..DYYYYYYY..',
+    4: '..DYKKYKKY..',
+    6: '....YRRY....',
+    8: '..WWWWWWW...',
+    9: '.YWWQWWWY...',
+  }),
+  happy: sophiaFrame({
+    3: '..DYYYYYYY..',
+    4: '..DYKYYKYY..',
+    6: '...YRYYRY...',
+    7: '....YRRY....',
+    8: 'Y.WWWWWWW.Y.',
+    9: '.WWWQWWWWW..',
+  }),
+};
