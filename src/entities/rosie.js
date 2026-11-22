@@ -3,6 +3,7 @@ import { SPR } from '../sprites.js';
 // Rosie follows the path the player took a moment ago, so she hops along
 // behind them without ever getting stuck. She can't get hurt.
 const DELAY = 18;
+const H = 9;
 
 export class Rosie {
   constructor(x, y) {
@@ -19,7 +20,7 @@ export class Rosie {
   snap(p) {
     this.trail = [];
     this.x = p.x + p.w / 2 - p.facing * 9 - 5;
-    this.y = p.y + p.h - 8;
+    this.y = p.y + p.h - H;
   }
 
   // Run over to a seed, then call done() when she grabs it.
@@ -32,7 +33,7 @@ export class Rosie {
   update(p) {
     const px = this.x;
     if (this.mode === 'fetch') {
-      const tx = this.target.x - 2, ty = this.target.y - 1;
+      const tx = this.target.x - 2, ty = this.target.y - 3;
       const dx = tx - this.x, dy = ty - this.y;
       const d = Math.hypot(dx, dy);
       if (d < 2) {
@@ -51,7 +52,7 @@ export class Rosie {
       if (this.trail.length > DELAY) {
         const t = this.trail.shift();
         this.x += (t.x - t.f * 9 - 5 - this.x) * 0.5;
-        this.y += (t.y - 8 - this.y) * 0.5;
+        this.y += (t.y - H - this.y) * 0.5;
       }
       if (Math.hypot(this.x - p.x, this.y - p.y) > 120) this.snap(p);
     }

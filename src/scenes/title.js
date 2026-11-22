@@ -8,10 +8,16 @@ export class TitleScene {
     this.game = game;
     this.t = 0;
     this.sel = 0;
+    const last = game.progress.lastLevel;
     this.buttons = [
-      { label: 'PLAY', x: 32, y: 168, w: 80, h: 20, go: () => game.startLevel('levels/level1/00-spawn.json') },
-      { label: 'MY AVATAR', x: 32, y: 196, w: 80, h: 20, go: () => game.go(new AvatarBuilderScene(game)) },
-    ];
+      { label: 'PLAY', go: () => game.startLevel('levels/level1/00-spawn.json') },
+      last && { label: 'CONTINUE', go: () => game.startLevel(last) },
+      { label: 'MY AVATAR', go: () => game.go(new AvatarBuilderScene(game)) },
+    ].filter(Boolean);
+    // Continue is the easy pick when there's a floor to go back to
+    if (last) this.sel = 1;
+    const gap = this.buttons.length > 2 ? 24 : 28;
+    this.buttons.forEach((b, i) => Object.assign(b, { x: 32, y: 162 + i * gap, w: 80, h: 20 }));
   }
 
   update() {
@@ -39,7 +45,7 @@ export class TitleScene {
     const f = this.game.avatarFrames();
     const hop = Math.floor(this.t / 40) % 4 === 3;
     r.spr(hop ? f.jump : f.idle, 42, hop ? 106 : 112, false, 3);
-    r.spr(SPR.rosie, 76, 124, true, 3);
+    r.spr(SPR.rosie, 76, 121, true, 3);
 
     this.buttons.forEach((b, i) => drawButton(r, b, i === this.sel));
     r.textC('A GAME BY SOPHIA', 72, 240, 'P');

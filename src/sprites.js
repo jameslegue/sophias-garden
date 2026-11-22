@@ -52,6 +52,46 @@ const TILES = {
     'RPR.RPR.',
     'GGGGGGGG',
   ],
+  branch: [
+    'GLDDDDLG',
+    'DDDDDODD',
+    '.DDDDDD.',
+    '........',
+    '........',
+    '........',
+    '........',
+    '........',
+  ],
+  melon: [
+    'TGGGGGGT',
+    'GLGGLGGL',
+    'GLGGLGGL',
+    'GLGGLGGL',
+    'GLGGLGGL',
+    'GLGGLGGL',
+    'GLGGLGGL',
+    'TGGGGGGT',
+  ],
+  juice: [
+    'MMRMMMRM',
+    'RMMMRMMM',
+    'DDDDDDDD',
+    'DDKDDDDD',
+    'DDDDDKDD',
+    'DKDDDDDD',
+    'DDDDDDDD',
+    'DDDDDDKD',
+  ],
+  seedStep: [
+    '..YYYY..',
+    '.YYWYYY.',
+    '..YYYY..',
+    '........',
+    '........',
+    '........',
+    '........',
+    '........',
+  ],
   // Background (no collision)
   bgBrick: [
     'PPPNPPPP',
@@ -121,10 +161,11 @@ const CLOUD = [
 
 const FLOWER = ['..M..', '.MYM.', '..M..', '..G..', '.GG..'];
 
-// Rosie - our red toy poodle (10x8, facing right)
+// Rosie - our red toy poodle, with a ponytail and a pink bow (10x9, facing right)
 const ROSIE = [
-  '......RRR.',
-  'R....RRRRR',
+  '....MPM...',
+  '...RR.RRR.',
+  'R..R.RRRRR',
   'RR...PRKRR',
   '.R..RPRRRK',
   '..RRRRRRR.',
@@ -133,14 +174,37 @@ const ROSIE = [
   '..R.R.R.R.',
 ];
 const ROSIE_RUN = [
-  '......RRR.',
-  'R....RRRRR',
+  '....MPM...',
+  '...RR.RRR.',
+  'R..R.RRRRR',
   'RR...PRKRR',
   '.R..RPRRRK',
   '..RRRRRRR.',
   '..RRRRRR..',
   '.P..PP..P.',
   'R...RR...R',
+];
+
+const CARROT = [
+  'OOOOOOOO',
+  'OYOOOOKO',
+  '.OOOOOO.',
+  '..OOOO..',
+  '..OOKO..',
+  '...OO...',
+  '...OO...',
+  '....O...',
+];
+const CARROT_LEAF = ['.G.L.G.', '..GGG..', '...G...'];
+const BERRY = [
+  '.GLGGLG.',
+  'RRRRRRRR',
+  'RYRRRYRR',
+  'RRRYRRRR',
+  '.RRRRYR.',
+  '..RRRR..',
+  '...RR...',
+  '........',
 ];
 
 const SEED = ['..XX..', '.XXXX.', 'XWXXXX', 'XWXXXX', 'XXXXXX', '.XXXX.', '..XX..'];
@@ -164,6 +228,9 @@ export const SPR = {
   flowerY: makeSprite(FLOWER, { M: 'Y', Y: 'O' }),
   rosie: makeSprite(ROSIE),
   rosieRun: makeSprite(ROSIE_RUN),
+  carrot: makeSprite(CARROT),
+  carrotLeaf: makeSprite(CARROT_LEAF),
+  berry: makeSprite(BERRY),
   fruit: {},
   fruitGray: {},
   seed: {},
@@ -174,3 +241,7 @@ for (const f of FRUITS) {
   SPR.fruitGray[f.id] = makeSprite(f.icon, {}, 'E');
   SPR.seed[f.id] = makeSprite(SEED, { X: f.seed });
 }
+
+// Each floor can recolor the background bricks and the checkpoint flower.
+export const themedBg = (map) => makeSprite(TILES.bgBrick, map);
+export const flowerSprite = (color) => makeSprite(CHECKPOINT_ON, { M: color });

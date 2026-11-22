@@ -1,5 +1,7 @@
-import { BLOCKS, ENTITIES } from '../blocks.js';
-import { SPR, fruitById } from '../sprites.js';
+import { BLOCKS, ENTITIES, PLATFORMS } from '../blocks.js';
+import { SPR, fruitById, themedBg, flowerSprite } from '../sprites.js';
+import { makePlatform } from '../entities/platforms.js';
+import { AppleTree, updateApple, appleBox, drawApple } from '../entities/apple.js';
 import { Player } from '../entities/player.js';
 import { Rosie } from '../entities/rosie.js';
 import { Camera } from '../engine/camera.js';
@@ -17,11 +19,17 @@ export async function loadLevel(path) {
 // Split a floor's text map into blocks and things (start, checkpoints, seed...).
 export function parseLevel(data) {
   const ents = [];
-  const tiles = data.map.map((row, r) => [...row].map((ch, c) => {
+  const platforms = [];
+  const tiles = data.map.map((row, r) => [...row].map((ch, c, line) => {
+    if (PLATFORMS[ch]) {
+      if (line[c - 1] === ch) platforms[platforms.length - 1].w += T; // join a run into one platform
+      else platforms.push(makePlatform(PLATFORMS[ch], c * T, r * T));
+      return '.';
+    }
     if (ENTITIES[ch]) { ents.push({ type: ENTITIES[ch], c, r }); return '.'; }
     return BLOCKS[ch] ? ch : '.';
   }));
-  return { w: tiles[0].length, h: tiles.length, tiles, ents };
+  return { w: tiles[0].length, h: tiles.length, tiles, ents, platforms };
 }
 
 // A playable floor. The spawn area is a floor too (see spawn.js).
@@ -41,6 +49,14 @@ export class PlayScene {
 
     this.checkpoints = ents.filter((e) => e.type === 'checkpoint').map((e) => ({ x: e.c * T, y: e.r * T, active: false }));
     this.seeds = ents.filter((e) => e.type === 'seed').map((e) => ({ x: e.c * T + 1, y: e.r * T + 1, fruit: data.fruit, taken: false }));
+    this.trees = ents.filter((e) => e.type === 'apple').map((e) => new AppleTree(e.c, e.r));
+    this.apples = [];
+
+    // Floor look: background brick colors, wall decoration, checkpoint flower color
+    this.bgTile = data.bg ? themedBg(data.bg) : SPR.bgBrick;
+    this.deco = !data.fruit || data.fruit === 'rose' ? SPR.bgRose : SPR.fruit[data.fruit];
+    this.cpOn = data.flower ? flowerSprite(data.flower) : SPR.cpOn;
+    if (data.floor) { game.progress.lastLevel = game.levelPath; game.saveProgress(); }
 
     this.cam = new Camera(game.r.H, this.level.h * T);
     this.cam.snap(this.player.y);
@@ -108,12 +124,13 @@ export class PlayScene {
 
     if (this.state !== 'play') return;
 
+    this.updateWorld();
     this.player.update(input, this.level);
     this.rosie.update(this.player);
     this.cam.follow(this.player.y);
     const pb = this.player.box();
 
-    if (touchingHazard(pb, this.level)) { this.die(); return; }
+    if (touchingHazard(pb, this.level) || this.apples.some((a) => overlaps(pb, appleBox(a)))) { this.die(); return; }
 
     for (const cp of this.checkpoints) {
       if (!cp.active && overlaps(pb, { x: cp.x, y: cp.y, w: T, h: T })) {
@@ -130,6 +147,12 @@ export class PlayScene {
     }
 
     this.onUpdate?.();
+  }
+
+  updateWorld() {
+    for (const p of this.level.platforms) p.update(this.player);
+    for (const tree of this.trees) tree.update(this);
+    this.apples = this.apples.filter((a) => updateApple(a, this.level));
   }
 
   die() {
@@ -165,8 +188,12 @@ export class PlayScene {
   drawBackground(r, top, bottom) {
     for (let row = top; row <= bottom; row++) {
       for (let c = 0; c < this.level.w; c++) {
-        r.spr(SPR.bgBrick, c * T, row * T);
-        if (((c * 7 + row * 13) % 23) === 0) r.spr(SPR.bgRose, c * T, row * T);
+        r.spr(this.bgTile, c * T, row * T);
+        if (((c * 7 + row * 13) % 23) === 0) {
+          r.ctx.globalAlpha = this.deco === SPR.bgRose ? 1 : 0.3;
+          r.spr(this.deco, c * T, row * T);
+          r.ctx.globalAlpha = 1;
+        }
       }
     }
   }
@@ -190,7 +217,10 @@ export class PlayScene {
         if (b?.sprite) r.spr(SPR[b.sprite], c * T, row * T);
       }
     }
-    for (const cp of this.checkpoints) r.spr(cp.active ? SPR.cpOn : SPR.cpOff, cp.x, cp.y);
+    for (const p of this.level.platforms) p.draw(r);
+    for (const tree of this.trees) tree.draw(r);
+    for (const a of this.apples) drawApple(r, a);
+    for (const cp of this.checkpoints) r.spr(cp.active ? this.cpOn : SPR.cpOff, cp.x, cp.y);
     for (const s of this.seeds) {
       if (s.taken) continue;
       const bob = Math.round(Math.sin(this.t / 10) * 2);

@@ -1,5 +1,6 @@
 import { moveBody } from '../engine/physics.js';
 import { sfx } from '../engine/audio.js';
+import { BLOCKS } from '../blocks.js';
 
 const RUN = 1.2;
 const ACCEL = 0.3;
@@ -30,11 +31,12 @@ export class Player {
     const jumpPressed = input && (input.pressed('jump') || input.pressed('up'));
     const dir = (right ? 1 : 0) - (left ? 1 : 0);
 
+    const slip = this.onGround && BLOCKS[this.groundTile]?.slippery;
     if (dir) {
-      this.vx = Math.max(-RUN, Math.min(RUN, this.vx + dir * ACCEL));
+      this.vx = Math.max(-RUN, Math.min(RUN, this.vx + dir * (slip ? 0.06 : ACCEL)));
       this.facing = dir;
     } else {
-      this.vx *= this.onGround ? 0.6 : 0.85;
+      this.vx *= slip ? 0.98 : this.onGround ? 0.6 : 0.85;
       if (Math.abs(this.vx) < 0.05) this.vx = 0;
     }
 
@@ -48,6 +50,7 @@ export class Player {
 
     this.vy = Math.min(this.vy + GRAVITY, MAX_FALL);
     moveBody(this, level);
+    if (this.bounced) { this.bounced = false; sfx.bounce(); }
     this.anim++;
     if (this.blink > 0) this.blink--;
   }

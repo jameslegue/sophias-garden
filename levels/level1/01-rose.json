@@ -4,11 +4,11 @@
   "floor": 1,
   "fruit": "rose",
   "theme": "tower",
-  "next": null,
+  "next": "levels/level1/02-carrot.json",
   "outro": [
     { "who": "ROSIE", "text": "WOOF!" },
     { "who": "", "text": "ROSIE GOT THE ROSE SEED! 1 DOWN, 4 TO GO." },
-    { "who": "", "text": "THE CARROT FLOOR IS STILL GROWING... COME BACK SOON!" }
+    { "who": "", "text": "NEXT UP: THE CARROT FLOOR!" }
   ],
   "map": [
     "##################",

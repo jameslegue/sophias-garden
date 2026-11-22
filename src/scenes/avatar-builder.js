@@ -79,7 +79,7 @@ export class AvatarBuilderScene {
     r.spr(img, 40, img === f.jump ? 10 : 14, false, 4);
     r.rect(16, 62, 112, 8, 'G');
     r.rect(16, 62, 112, 1, 'L');
-    r.spr(SPR.rosie, 84, 46, true, 2);
+    r.spr(SPR.rosie, 84, 44, true, 2);
 
     ROWS.forEach((row, i) => {
       const y = ROW_Y + i * ROW_H;

@@ -40,6 +40,7 @@ const game = {
   async startLevel(path) {
     try {
       const data = await loadLevel(path);
+      this.levelPath = path;
       this.go(data.theme === 'spawn' ? new SpawnScene(this, data) : new PlayScene(this, data));
     } catch (e) {
       console.error(e);

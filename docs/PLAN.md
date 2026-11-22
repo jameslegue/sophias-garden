@@ -45,14 +45,20 @@ Repo (`jameslegue/sophias-garden`) is empty - greenfield.
 | Apple | Apples fall from branches - dodge them; branches are platforms | Apple core |
 | Melon | Bouncy melon trampolines, slippery juice puddles | Melon slice |
 | Strawberry | Strawberries vanish a moment after you land; tiny seed platforms | Strawberry flower |
-| Battle vs Sophia | Boss arena, 5 rounds: Sophia throws that round's fruit; survive, then deliver the seed (Rosie hands it over) | Start of each round |
+| Battle vs Sophia | Boss arena, 5 rounds: mad Sophia throws that round's fruit from a karate stance, then cartwheels away; survive, then deliver the seed (Rosie hands it over) | Start of each round |
 
 Each floor ends at its seed. Win = garden blooms with all 5 fruits + "Level 1 complete" screen (Rosie celebration).
 
 ## Rosie (companion)
 - Follows the player with simple trailing/hopping AI. She can't get hurt and teleports to the player if she falls behind (no babysitting the dog).
 - Picks up seeds at the end of each floor; carries the seed inventory; hands seeds to Sophia in the battle.
-- Pixel sprite: red curly poodle, idle/run/jump/celebrate frames. Sophia gets to approve the look.
+- Pixel sprite: red curly poodle with a **ponytail and a cute pink bow** (Sophia's call), idle/run frames.
+
+## Sophia (the boss) - from Sophia
+- She's **mad**.
+- Fights from a **karate stance**.
+- Throws fruit, then **cartwheels out of the way**.
+- Built in Stage 3: each of the 5 rounds she throws that round's fruit from her karate stance, cartwheels across the arena, and the player delivers that seed when she stops (Rosie hands it over).
 
 ## Avatar builder (Roblox-style, pixel)
 Pick parts + colors from our palette: skin tone, hair style + color, shirt, pants, shoes, hat/accessory. Live preview walking/jumping. Saved on the phone (localStorage, with a fallback if storage is unavailable). Later stage adds free drawing of your own parts.

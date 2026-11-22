@@ -33,6 +33,7 @@ export const sfx = {
   hurt: () => tone(220, 0.3, { to: 55, type: 'sawtooth', vol: 0.04 }),
   checkpoint: () => notes([523, 659, 784], 0.07),
   seed: () => notes([523, 659, 784, 1047, 784, 1047], 0.08),
+  bounce: () => tone(180, 0.2, { to: 720, type: 'triangle', vol: 0.08 }),
   blip: () => tone(880, 0.04, { vol: 0.03 }),
   select: () => tone(660, 0.05, { vol: 0.04 }),
   door: () => notes([392, 523, 659], 0.09, { type: 'triangle', vol: 0.08 }),

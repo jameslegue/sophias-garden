@@ -35,6 +35,13 @@ Testing shortcut: `?level=levels/level1/01-rose.json` jumps straight to a floor.
 | `%` | Dirt (solid) |
 | `-` | Rose vine (jump up through it, stand on top) |
 | `^` | Thorns (send you back to your flower) |
+| `b` | Apple branch (jump up through it) |
+| `m` | Bouncy melon (boing!) |
+| `j` | Juice puddle (slippery) |
+| `o` | Seed step (tiny, jump up through it) |
+| `c` | Carrot - sinks while you stand on it |
+| `v` | Strawberry - vanishes after you land, grows back |
+| `a` | Apple that keeps dropping from here |
 | `P` | Player start |
 | `C` | Checkpoint flower |
 | `S` | Seed (end of floor) |
@@ -44,8 +51,8 @@ The later "make your own obby" builder will save floors in this same format.
 
 ## Roadmap
 1. ✅ Foundation + Rose floor - controls, avatar builder, spawn intro, Rosie, checkpoints, seed bar
-2. Floors 2-5 - Carrot, Apple, Melon, Strawberry
-3. Battle vs Sophia + music, ending, offline install
+2. ✅ Floors 2-5 - Carrot, Apple, Melon, Strawberry, plus CONTINUE from your last floor
+3. Battle vs Sophia (she's mad, karate stance, cartwheels away after throwing fruit) + music, ending, offline install
 4. Avatar pixel editor - draw your own hats and outfits
 5. Obby builder - make your own floors
 6. Sharing + Level 2
