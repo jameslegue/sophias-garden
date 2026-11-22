@@ -22,6 +22,7 @@
   canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: none; }
   #pad { display: flex; gap: 10px; width: min(100%, 420px); height: 96px; flex: none; padding: 0 12px; box-sizing: border-box; }
   #pad button {
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
     flex: 1; border: 3px solid #ff77a8; border-radius: 0; background: #5d275d; color: #f4f4f4;
     font: bold 22px ui-monospace, monospace; touch-action: none; -webkit-tap-highlight-color: transparent;
     box-shadow: inset -4px -4px 0 #1a1c2c;
@@ -38,6 +39,29 @@
     <button data-k="jump" class="jump">JUMP</button>
   </div>
   <script>
+    // iPhone Safari ignores "no zoom" in the page settings, so quick double-taps on JUMP
+    // (or a pinch) zoom the page and push the buttons off screen. Block those gestures,
+    // and if the page still ends up zoomed, snap it back.
+    (() => {
+      const stop = (e) => e.preventDefault();
+      ['gesturestart', 'gesturechange', 'gestureend', 'dblclick'].forEach((t) => document.addEventListener(t, stop, { passive: false }));
+      document.addEventListener('touchmove', stop, { passive: false });
+      let lastTouch = 0;
+      document.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouch < 400) e.preventDefault(); // second tap of a double-tap
+        lastTouch = now;
+      }, { passive: false });
+      const meta = document.querySelector('meta[name=viewport]');
+      const unzoom = () => {
+        if (window.visualViewport && window.visualViewport.scale > 1.01) {
+          meta.content = 'width=device-width,initial-scale=1.01,maximum-scale=1,user-scalable=no,viewport-fit=cover';
+          setTimeout(() => { meta.content = 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover'; }, 50);
+        }
+      };
+      window.visualViewport?.addEventListener('resize', unzoom);
+    })();
+
     // Offline helper + always-fresh updates. On a phone's first visit, reload once after it
     // takes over so every game file comes through it (no stale mix of old and new files).
     if ('serviceWorker' in navigator) {
