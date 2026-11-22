@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Sophia's Garden</title>
+<meta name="theme-color" content="#1a1c2c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sophia's Garden">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+  html, body { margin: 0; height: 100%; background: #1a1c2c; overflow: hidden; overscroll-behavior: none; }
+  body {
+    position: fixed; inset: 0; box-sizing: border-box;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  }
+  canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: none; }
+  #pad { display: flex; gap: 10px; width: min(100%, 420px); height: 96px; flex: none; padding: 0 12px; box-sizing: border-box; }
+  #pad button {
+    flex: 1; border: 3px solid #ff77a8; border-radius: 0; background: #5d275d; color: #f4f4f4;
+    font: bold 22px ui-monospace, monospace; touch-action: none; -webkit-tap-highlight-color: transparent;
+    box-shadow: inset -4px -4px 0 #1a1c2c;
+  }
+  #pad button.on { background: #b13e53; box-shadow: inset 4px 4px 0 #1a1c2c; }
+  #pad .jump { flex: 1.6; }
+</style>
+</head>
+<body>
+  <canvas id="game" width="144" height="256"></canvas>
+  <div id="pad">
+    <button data-k="left" aria-label="Left">◀</button>
+    <button data-k="right" aria-label="Right">▶</button>
+    <button data-k="jump" class="jump">JUMP</button>
+  </div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
