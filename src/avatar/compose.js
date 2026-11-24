@@ -21,14 +21,19 @@ function overlay(grid, rows, top = 0) {
   });
 }
 
-// Build the sprite for one animation frame (8x12).
-export function composeFrame(av, frame) {
+// One animation frame (8x12) as rows of palette letters. The 3D version builds blocks from this.
+export function composeRows(av, frame) {
   const grid = [...HEAD, ...BODY[frame]].map((r) => [...r]);
   overlay(grid, OUTFITS[av.outfit] || [], HEAD.length);
   overlay(grid, HAIR[av.hair] || []);
   overlay(grid, HATS[av.hat] || []);
   const map = { s: av.skin, e: 'K', h: av.hairColor, t: av.shirt, p: av.pants, f: av.shoes, a: av.hatColor };
-  return makeSprite(grid.map((r) => r.join('')), map);
+  return grid.map((r) => r.map((ch) => (ch === '.' ? '.' : map[ch] || ch)).join(''));
+}
+
+// Build the sprite for one animation frame (8x12).
+export function composeFrame(av, frame) {
+  return makeSprite(composeRows(av, frame));
 }
 
 export function composeFrames(av) {

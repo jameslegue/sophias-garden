@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Sophia's Garden 3D</title>
+<meta name="theme-color" content="#1a1c2c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<style>
+  html, body { margin: 0; height: 100%; background: #41a6f6; overflow: hidden; overscroll-behavior: none; }
+  body { position: fixed; inset: 0; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; font: bold 16px ui-monospace, monospace; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: none; }
+  #hud { pointer-events: none; }
+  #jump {
+    position: absolute; right: 18px; bottom: calc(24px + env(safe-area-inset-bottom)); width: 104px; height: 104px;
+    border: 4px solid #ff77a8; border-radius: 0; background: #5d275dcc; color: #f4f4f4; font: inherit; font-size: 20px;
+    box-shadow: inset -5px -5px 0 #1a1c2c; touch-action: none; -webkit-tap-highlight-color: transparent;
+  }
+  #jump.on { background: #b13e53; box-shadow: inset 5px 5px 0 #1a1c2c; }
+  #joy { position: absolute; display: none; width: 110px; height: 110px; margin: -55px 0 0 -55px; border: 4px solid #ff77a8aa; background: #5d275d55; pointer-events: none; }
+  #knob { position: absolute; left: 30px; top: 30px; width: 42px; height: 42px; background: #ff77a8; box-shadow: inset -4px -4px 0 #b13e53; }
+  #back { position: absolute; right: 6px; top: calc(4px + env(safe-area-inset-top)); padding: 2px 8px; border: 3px solid #ff77a8; background: #5d275d; color: #f4f4f4; text-decoration: none; font-size: 13px; }
+  #end { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #1a1c2caa; }
+  #end .msg { color: #ffcd75; text-align: center; padding: 0 20px; line-height: 1.6; text-shadow: 3px 3px 0 #5d275d; }
+  #end button, #end a { width: 220px; padding: 12px 0; border: 4px solid #ff77a8; background: #5d275d; color: #f4f4f4; font: inherit; text-align: center; text-decoration: none; }
+</style>
+</head>
+<body>
+  <canvas id="view"></canvas>
+  <canvas id="hud"></canvas>
+  <div id="joy"><div id="knob"></div></div>
+  <button id="jump">JUMP</button>
+  <a id="back" href="../">2D GAME</a>
+  <div id="end">
+    <div class="msg">YOU GOT THE ROSE SEED!<br>THIS IS A 3D TEST LEVEL -<br>MORE COMING SOON!</div>
+    <button id="again">PLAY AGAIN</button>
+    <a href="../">BACK TO 2D GAME</a>
+  </div>
+  <script>
+    // Same iPhone zoom protection as the 2D game.
+    (() => {
+      const stop = (e) => e.preventDefault();
+      ['gesturestart', 'gesturechange', 'gestureend', 'dblclick'].forEach((t) => document.addEventListener(t, stop, { passive: false }));
+      document.addEventListener('touchmove', stop, { passive: false });
+      let last = 0;
+      document.addEventListener('touchend', (e) => { const now = Date.now(); if (now - last < 400) e.preventDefault(); last = now; }, { passive: false });
+    })();
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(() => {});
+  </script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

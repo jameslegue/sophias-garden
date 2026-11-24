@@ -293,3 +293,6 @@ export const SOPHIA = {
     9: '.WWWQWWWWW..',
   }),
 };
+
+// Raw pixel rows, shared with the 3D version (which turns them into blocks).
+export const ROWS = { TILES, ROSIE, SEED, CHECKPOINT_OFF, CHECKPOINT_ON };

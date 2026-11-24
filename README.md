@@ -26,6 +26,14 @@ Testing shortcut: `?level=levels/level1/01-rose.json` jumps straight to a floor 
 
 Offline: `sw.js` caches the game so it works from the home screen with no signal. It always tries the network first, so updates show up right away. If you add new files, add them to the list in `sw.js` too (anything missed still gets cached the first time it loads).
 
+## 3D test (`/3d`)
+A free-roaming, blocky (Minecraft-style) 3D version of the Rose floor, Roblox-obby style: climb the platforms spiraling around the tower to reach the Rose seed. Uses your same avatar, plus Rosie.
+- Phone: left side of the screen = joystick, right side = drag to look, JUMP button
+- Computer: WASD/arrows to move, Space to jump, Q/E or drag to turn the camera
+- Fall off or touch a thorn block and you go back to your last flower
+
+Built with [Three.js](https://threejs.org) (free, MIT license, copied into `vendor/` so it works offline). The level is `3d/levels/rose.json` - a list of block boxes `[x, y, z, width, height, depth, type]`. Blocks: `grass`, `dirt`, `brick`, `vine`, `thorn`.
+
 ## How it's built
 - Plain JavaScript modules + an HTML canvas at 144x256, scaled up in whole pixels so it stays crisp
 - One 16-color palette (`src/engine/palette.js`); all art is text grids of palette letters (`src/sprites.js`, `src/avatar/parts.js`)
