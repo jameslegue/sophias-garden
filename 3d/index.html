@@ -22,9 +22,12 @@
   #joy { position: absolute; display: none; width: 110px; height: 110px; margin: -55px 0 0 -55px; border: 4px solid #ff77a8aa; background: #5d275d55; pointer-events: none; }
   #knob { position: absolute; left: 30px; top: 30px; width: 42px; height: 42px; background: #ff77a8; box-shadow: inset -4px -4px 0 #b13e53; }
   #back { position: absolute; right: 6px; top: calc(4px + env(safe-area-inset-top)); padding: 2px 8px; border: 3px solid #ff77a8; background: #5d275d; color: #f4f4f4; text-decoration: none; font-size: 13px; }
-  #end { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #1a1c2caa; }
-  #end .msg { color: #ffcd75; text-align: center; padding: 0 20px; line-height: 1.6; text-shadow: 3px 3px 0 #5d275d; }
-  #end button, #end a { width: 220px; padding: 12px 0; border: 4px solid #ff77a8; background: #5d275d; color: #f4f4f4; font: inherit; text-align: center; text-decoration: none; }
+  #panel { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: #1a1c2cbb; }
+  #panel .title { color: #ff77a8; font-size: 28px; text-align: center; line-height: 1.3; text-shadow: 4px 4px 0 #5d275d; }
+  #panel .msg { color: #ffcd75; text-align: center; padding: 0 20px; line-height: 1.6; text-shadow: 3px 3px 0 #5d275d; }
+  #panel .buttons { display: flex; flex-direction: column; gap: 12px; }
+  #panel button, #panel a { width: 230px; padding: 12px 0; border: 4px solid #ff77a8; background: #5d275d; color: #f4f4f4; font: inherit; text-align: center; text-decoration: none; box-sizing: border-box; }
+  #panel .main { background: #b13e53; border-color: #ffcd75; }
 </style>
 </head>
 <body>
@@ -33,10 +36,11 @@
   <div id="joy"><div id="knob"></div></div>
   <button id="jump">JUMP</button>
   <a id="back" href="../">2D GAME</a>
-  <div id="end">
-    <div class="msg">YOU GOT THE ROSE SEED!<br>THIS IS A 3D TEST LEVEL -<br>MORE COMING SOON!</div>
-    <button id="again">PLAY AGAIN</button>
-    <a href="../">BACK TO 2D GAME</a>
+  <!-- Start menu and end-of-floor screens (filled in by main.js) -->
+  <div id="panel">
+    <div class="title"></div>
+    <div class="msg"></div>
+    <div class="buttons"></div>
   </div>
   <script>
     // Same iPhone zoom protection as the 2D game.

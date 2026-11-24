@@ -3,6 +3,7 @@ const HW = 0.3;       // half width of the body box
 const H = 1.45;       // body height
 const SPEED = 5;      // blocks per second
 const JUMP = 11.2;    // about 2.2 blocks high
+const BOUNCE = 16;    // melon bounce - about 4.5 blocks high
 const GRAVITY = 28;
 const MAX_FALL = 30;
 const COYOTE = 0.1;   // seconds you can still jump after running off an edge
@@ -13,6 +14,8 @@ export class Player3D {
     this.pos = { x, y, z };
     this.vel = { x: 0, y: 0, z: 0 };
     this.onGround = false;
+    this.ground = null;    // block type you're standing on
+    this.groundBox = null; // moving platform you're standing on
     this.facing = 0;
     this.coyote = 0;
     this.buffer = 0;
@@ -25,7 +28,8 @@ export class Player3D {
 
   // move = {x, z} direction in the world (length 0..1)
   update(dt, move, jumpPressed, world) {
-    const accel = this.onGround ? 45 : 18;
+    const slippery = this.onGround && this.ground?.slippery;
+    const accel = slippery ? 5 : this.onGround ? 45 : 18;
     for (const a of ['x', 'z']) {
       const want = move[a] * SPEED;
       const diff = want - this.vel[a];
@@ -51,27 +55,45 @@ export class Player3D {
     this.sweep('x', this.vel.x * dt, world);
     this.sweep('z', this.vel.z * dt, world);
     this.onGround = false;
+    this.ground = null;
+    this.groundBox = null;
     this.sweep('y', this.vel.y * dt, world);
+
+    // Boing!
+    this.bounced = false;
+    if (this.onGround && this.ground?.bounce) {
+      this.vel.y = BOUNCE;
+      this.onGround = false;
+      this.coyote = 0;
+      this.bounced = true;
+    }
   }
 
-  // Move along one axis, then push back out of any solid block we ran into.
+  // Move along one axis, then push back out of any solid block or platform we ran into.
   sweep(axis, amount, world) {
     if (!amount) return;
     const p = this.pos;
     p[axis] += amount;
-    const x0 = Math.floor(p.x - HW), x1 = Math.floor(p.x + HW - 1e-6);
-    const y0 = Math.floor(p.y), y1 = Math.floor(p.y + H - 1e-6);
-    const z0 = Math.floor(p.z - HW), z1 = Math.floor(p.z + HW - 1e-6);
-    for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) for (let z = z0; z <= z1; z++) {
-      if (!world.solid(x, y, z)) continue;
-      if (axis === 'x') p.x = amount > 0 ? x - HW - 1e-4 : x + 1 + HW + 1e-4;
-      if (axis === 'z') p.z = amount > 0 ? z - HW - 1e-4 : z + 1 + HW + 1e-4;
+    const box = { x0: p.x - HW, y0: p.y, z0: p.z - HW, x1: p.x + HW, y1: p.y + H, z1: p.z + HW };
+    const hit = (b, block) => {
+      if (axis === 'x') p.x = amount > 0 ? b.x0 - HW - 1e-4 : b.x1 + HW + 1e-4;
+      if (axis === 'z') p.z = amount > 0 ? b.z0 - HW - 1e-4 : b.z1 + HW + 1e-4;
       if (axis === 'y') {
-        if (amount > 0) p.y = y - H - 1e-4;
-        else { p.y = y + 1; this.onGround = true; }
+        if (amount > 0) p.y = b.y0 - H - 1e-4;
+        else { p.y = b.y1; this.onGround = true; this.ground = block; this.groundBox = b.moving ? b : null; }
       }
       this.vel[axis] = 0;
-      return;
+    };
+    for (let x = Math.floor(box.x0); x <= Math.floor(box.x1 - 1e-6); x++) {
+      for (let y = Math.floor(box.y0); y <= Math.floor(box.y1 - 1e-6); y++) {
+        for (let z = Math.floor(box.z0); z <= Math.floor(box.z1 - 1e-6); z++) {
+          if (world.solid(x, y, z)) { hit({ x0: x, y0: y, z0: z, x1: x + 1, y1: y + 1, z1: z + 1 }, world.block(x, y, z)); return; }
+        }
+      }
+    }
+    for (const b of world.boxes) {
+      if (!b.active) continue;
+      if (box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0 && box.z0 < b.z1 && box.z1 > b.z0) { hit(b, b.block); return; }
     }
   }
 

@@ -1,11 +1,16 @@
 {
   "name": "ROSE TOWER",
+  "fruit": "rose",
+  "next": "carrot",
+  "sky": "#41a6f6",
   "size": [19, 38, 19],
   "fallY": -4,
   "start": [9.5, 5, 13.5],
   "startYaw": 0,
   "checkpoints": [[13.5, 11, 4.5], [3.5, 17, 11.5], [15.5, 23, 11.5], [5.5, 29, 4.5]],
   "seed": [9.5, 31.6, 9.5],
+  "dynamic": [],
+  "apples": [],
   "blocks": [
     [4, 4, 4, 11, 1, 11, "grass"],
     [5, 3, 5, 9, 1, 9, "dirt"],

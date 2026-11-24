@@ -266,10 +266,10 @@ const SOPHIA_STANCE = [
   'WW.......WW.',
   'YY.......YY.',
 ];
-const sophiaFrame = (rows) => makeSprite(SOPHIA_STANCE.map((r, i) => rows[i] ?? r));
-export const SOPHIA = {
-  stance: sophiaFrame({}),
-  throw: sophiaFrame({
+const sophiaRows = (rows) => SOPHIA_STANCE.map((r, i) => rows[i] ?? r);
+const SOPHIA_ROWS = {
+  stance: sophiaRows({}),
+  throw: sophiaRows({
     3: '..DKKYYKKY.Y',
     4: '..DYKYYKYY.W',
     5: '..DYYYYYYYW.',
@@ -277,14 +277,14 @@ export const SOPHIA = {
     7: '....YYYYW...',
     8: '..WWWWWWW...',
   }),
-  dizzy: sophiaFrame({
+  dizzy: sophiaRows({
     3: '..DYYYYYYY..',
     4: '..DYKKYKKY..',
     6: '....YRRY....',
     8: '..WWWWWWW...',
     9: '.YWWQWWWY...',
   }),
-  happy: sophiaFrame({
+  happy: sophiaRows({
     3: '..DYYYYYYY..',
     4: '..DYKYYKYY..',
     6: '...YRYYRY...',
@@ -293,6 +293,7 @@ export const SOPHIA = {
     9: '.WWWQWWWWW..',
   }),
 };
+export const SOPHIA = Object.fromEntries(Object.entries(SOPHIA_ROWS).map(([k, rows]) => [k, makeSprite(rows)]));
 
 // Raw pixel rows, shared with the 3D version (which turns them into blocks).
-export const ROWS = { TILES, ROSIE, SEED, CHECKPOINT_OFF, CHECKPOINT_ON };
+export const ROWS = { TILES, ROSIE, SEED, CHECKPOINT_OFF, CHECKPOINT_ON, SOPHIA: SOPHIA_ROWS };

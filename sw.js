@@ -1,7 +1,7 @@
 // Lets the game run offline from the home screen.
 // Always asks GitHub for the newest files first (so a new version shows up right away),
 // and falls back to the saved copy only when there's no signal.
-const CACHE = 'sophias-garden-v9';
+const CACHE = 'sophias-garden-v10';
 const FILES = [
   './',
   './3d/',
@@ -14,6 +14,13 @@ const FILES = [
   './3d/voxels.js',
   './3d/textures.js',
   './3d/levels/rose.json',
+  './3d/levels/carrot.json',
+  './3d/levels/apple.json',
+  './3d/levels/melon.json',
+  './3d/levels/strawberry.json',
+  './3d/levels/battle.json',
+  './3d/mechanics.js',
+  './3d/boss.js',
   './vendor/three.module.min.js',
   './icons/icon-192.png',
   './icons/icon-512.png',
